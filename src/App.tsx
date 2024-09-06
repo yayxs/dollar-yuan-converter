@@ -1,7 +1,11 @@
-import React from "react";
+import Post from '../posts/ts-00.mdx'
 
 function App() {
-	return <div>Hello World</div>;
+  return (
+    <div>
+      <Post />
+    </div>
+  )
 }
 
-export default App;
+export default App
