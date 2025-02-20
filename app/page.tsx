@@ -14,7 +14,7 @@ export default function Home() {
       setLoading(true);
       setError("");
       const response = await fetch("/api/exchange-rate");
-      if (!response.ok) throw new Error("获取汇率失败");
+      if (!response.ok) throw new Error("Failed to fetch exchange rate");
 
       const data = await response.json();
       if (data.error) throw new Error(data.error);
@@ -22,7 +22,9 @@ export default function Home() {
       setRate(data.rate);
       return data.rate;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "发生未知错误");
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
       return null;
     } finally {
       setLoading(false);
@@ -35,7 +37,7 @@ export default function Home() {
 
     const usdAmount = parseFloat(usd);
     if (isNaN(usdAmount)) {
-      setError("请输入有效的美元金额");
+      setError("Please enter a valid USD amount");
       return;
     }
 
@@ -50,28 +52,30 @@ export default function Home() {
 
   return (
     <main className="min-h-screen p-8 max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">美元人民币实时汇率转换</h1>
+      <h1 className="text-3xl font-bold mb-8">
+        USD to CNY Exchange Rate Converter
+      </h1>
 
       <div className="bg-white p-6 rounded-lg shadow-md">
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">美元金额</label>
+          <label className="block text-sm font-medium mb-2">USD Amount</label>
           <input
             type="number"
             value={usd}
             onChange={(e) => setUsd(e.target.value)}
             className="w-full p-2 border rounded-md"
-            placeholder="输入美元金额"
+            placeholder="Enter USD amount"
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">人民币金额</label>
+          <label className="block text-sm font-medium mb-2">CNY Amount</label>
           <input
             type="text"
             readOnly
             value={cny ? `¥ ${cny}` : ""}
             className="w-full p-2 border rounded-md bg-gray-50"
-            placeholder="转换结果"
+            placeholder="Conversion Result"
           />
         </div>
 
@@ -80,7 +84,7 @@ export default function Home() {
             {rate ? (
               <span>当前汇率：1 USD = {rate.toFixed(4)} CNY</span>
             ) : (
-              <span className="text-gray-500">正在获取汇率...</span>
+              <span className="text-gray-500">Fetching exchange rate...</span>
             )}
           </div>
           <button
@@ -91,7 +95,7 @@ export default function Home() {
             <ArrowPathIcon
               className={`w-4 h-4 mr-1 ${loading ? "animate-spin" : ""}`}
             />
-            刷新汇率
+            Refresh Rate
           </button>
         </div>
 
@@ -102,7 +106,7 @@ export default function Home() {
           disabled={loading}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md disabled:opacity-50"
         >
-          {loading ? "转换中..." : "立即转换"}
+          {loading ? "Converting..." : "Convert Now"}
         </button>
       </div>
     </main>
